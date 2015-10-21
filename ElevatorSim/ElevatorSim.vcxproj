@@ -82,18 +82,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Elevator.cpp" />
-    <ClCompile Include="BaseObject.cpp" />
-    <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Panel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Elevator.h" />
-    <ClInclude Include="BaseObject.h" />
-    <ClInclude Include="Floor.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Panel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
