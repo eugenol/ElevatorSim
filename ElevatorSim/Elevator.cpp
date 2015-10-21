@@ -21,6 +21,9 @@ void Elevator::draw()
 
 void Elevator::update()
 {
+	if (InputManager::getInstance().isMouseButtonPressed(0) && (InputManager::getInstance().getMouseX()))
+
+
 	ElevatorPanel->update();
 	pos_y += speed*direction;
 
@@ -31,4 +34,10 @@ void Elevator::update()
 
 
 
+}
+
+void  Elevator::checkButtons()
+{
+	ElevatorPanel->checkPressed();
+	std::cout << "Checking Panel" << std::endl;
 }

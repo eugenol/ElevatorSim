@@ -18,6 +18,7 @@ public:
 	~Panel();
 	void draw();
 	void update();
+	void checkPressed();
 };
 
 #endif

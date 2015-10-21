@@ -95,6 +95,14 @@ int main(int argc, char **argv)
 		{
 			redraw = true;
 			// update
+			if (InputManager::getInstance().isMouseButtonPressed(0))
+			{
+				if (InputManager::getInstance().getMouseX() < DISPLAY_WIDTH/2)
+				{
+					myElevator.checkButtons();
+					InputManager::getInstance().clearInput();
+				}
+			}
 			myElevator.update();
 		}
 

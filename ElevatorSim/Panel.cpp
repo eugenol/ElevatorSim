@@ -34,3 +34,11 @@ void Panel::update()
 		(*iter)->update();
 	}
 }
+
+void Panel::checkPressed()
+{
+	for (std::vector<Button*>::iterator iter = Buttons.begin(); iter != Buttons.end(); iter++)
+	{
+		(*iter)->isPressed();
+	}
+}

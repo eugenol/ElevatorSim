@@ -21,5 +21,21 @@ void Button::update()
 
 void Button::draw()
 {
-	al_draw_filled_rectangle(pos_x, pos_y, pos_x+width, pos_y+height, al_map_rgb(255, 0, 255));
+	if (lightOn ==true)
+		al_draw_filled_rectangle(pos_x, pos_y, pos_x+width, pos_y+height, al_map_rgb(255, 255, 255));
+	else
+		al_draw_filled_rectangle(pos_x, pos_y, pos_x + width, pos_y + height, al_map_rgb(255, 0, 255));
+}
+
+void Button::isPressed()
+{
+	if (InputManager::getInstance().getMouseX() > pos_x &&
+		InputManager::getInstance().getMouseX() < pos_x + width &&
+		InputManager::getInstance().getMouseY() > pos_y &&
+		InputManager::getInstance().getMouseY() < pos_y + width)
+	{
+		lightOn = true;
+		std::cout << "Floor " << floorNumber << " pressed" << std::endl;
+	}
+
 }
