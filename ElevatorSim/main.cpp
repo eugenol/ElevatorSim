@@ -6,6 +6,8 @@
 #include <allegro5/allegro_image.h>
 //Own h files
 #include "InputManager.h"
+#include "Elevator.h"
+
 
 int main(int argc, char **argv)
 {
@@ -25,7 +27,7 @@ int main(int argc, char **argv)
 
 	//Elevator variables
 	int numFloors = 10;
-
+	Elevator myElevator(numFloors);
 
 	//Initialise allegro, if unsuccesful, show error.
 	if (!al_init())
@@ -85,8 +87,6 @@ int main(int argc, char **argv)
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev); // wait for event
 
-		int xy[2];
-
 
 		//Capture key input
 		InputManager::getInstance().getInput(ev);
@@ -94,9 +94,8 @@ int main(int argc, char **argv)
 		if (ev.type == ALLEGRO_EVENT_TIMER)
 		{
 			redraw = true;
-			xy[0] = InputManager::getInstance().getMouseX();
-			xy[1] = InputManager::getInstance().getMouseY();
 			// update
+			myElevator.update();
 		}
 
 
@@ -117,7 +116,17 @@ int main(int argc, char **argv)
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 
-			al_draw_circle(xy[0], xy[1], 10, al_map_rgb(255, 0, 0), 3);
+			//Elevator shaft
+			al_draw_line(DISPLAY_WIDTH / 2 - 5, 0, DISPLAY_WIDTH / 2 - 5, DISPLAY_HEIGHT, al_map_rgb(255, 0, 0), 10);
+			al_draw_line(490, 0,490, DISPLAY_HEIGHT, al_map_rgb(255, 0, 0), 10);
+
+			// Floor lines
+			for (int i = 0; i < DISPLAY_HEIGHT; i += 60)
+			{
+				al_draw_line(DISPLAY_WIDTH / 2, i, DISPLAY_WIDTH, i, al_map_rgb(255, 0, 0), 10);
+			}
+			
+			myElevator.draw();
 			// draw
 			al_flip_display();
 		}
