@@ -1,9 +1,11 @@
 #include "Elevator.h"
+//#include "Panel.h"
 
 
 Elevator::Elevator(int floors)
 {
-	ElevatorPanel = new Panel(floors);
+	numFloors = floors;
+	ElevatorPanel = new Panel(this);
 }
 
 
@@ -21,10 +23,10 @@ void Elevator::draw()
 
 void Elevator::update()
 {
-	if (InputManager::getInstance().isMouseButtonPressed(0) && (InputManager::getInstance().getMouseX()))
-
-
+	//if (InputManager::getInstance().isMouseButtonPressed(0) && (InputManager::getInstance().getMouseX()))
+	
 	ElevatorPanel->update();
+	
 	pos_y += speed*direction;
 
 	if (pos_y < 0)
@@ -32,10 +34,15 @@ void Elevator::update()
 	if (pos_y + height > 600)
 		direction = -1;
 
-
+	ElevatorPanel->
 
 }
 
+
+void Elevator::addDestination(int destFloor)
+{
+	upQueue.push_back(destFloor);
+}
 void  Elevator::checkButtons()
 {
 	ElevatorPanel->checkPressed();

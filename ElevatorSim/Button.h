@@ -3,6 +3,8 @@
 #include "allegro5/allegro_primitives.h"
 #include "InputManager.h"
 #include <iostream>
+//#include "Elevator.h"
+
 
 class Button
 {
@@ -13,13 +15,16 @@ private:
 	int width = 40;
 	int height = 40;
 	bool lightOn = false;
+	//Elevator *owner;
 
 public:
 	Button(int floor_num);
 	~Button();
 	void update();
 	void draw();
-	void isPressed();
+	bool isPressed();
+	void setLight(int onOff);
+	int getFloorNum(){ return floorNumber; }
 };
 
 #endif

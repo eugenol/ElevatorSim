@@ -1,10 +1,20 @@
 #include "Panel.h"
+#include "Elevator.h"
 
 
-Panel::Panel(int floors)
+//Panel::Panel(int floors)
+//{
+//	for (int i = 0; i < floors; i++)
+//		Buttons.push_back(new Button(i));
+//}
+
+Panel::Panel(Elevator *elevator)
 {
-	for (int i = 0; i < floors; i++)
+	owner = elevator;
+	numFloors = owner->getFloors();
+	for (int i = 0; i < numFloors; i++)
 		Buttons.push_back(new Button(i));
+	//owner->addPanel(this);
 }
 
 
@@ -39,6 +49,15 @@ void Panel::checkPressed()
 {
 	for (std::vector<Button*>::iterator iter = Buttons.begin(); iter != Buttons.end(); iter++)
 	{
-		(*iter)->isPressed();
+		if ((*iter)->isPressed())
+		{
+			(*iter)->setLight(1);
+			owner->addDestination((*iter)->getFloorNum());
+		}
 	}
+}
+
+void Panel::clearButton(int floor_num)
+{
+	Buttons[floor_num]->setLight(0);
 }

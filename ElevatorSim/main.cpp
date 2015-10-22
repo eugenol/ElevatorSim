@@ -7,6 +7,7 @@
 //Own h files
 #include "InputManager.h"
 #include "Elevator.h"
+#include "Panel.h"
 
 
 int main(int argc, char **argv)
@@ -28,6 +29,8 @@ int main(int argc, char **argv)
 	//Elevator variables
 	int numFloors = 10;
 	Elevator myElevator(numFloors);
+	//Panel elevatorPanel(&myElevator);
+	//myElevator.addPanel(&elevatorPanel);
 
 	//Initialise allegro, if unsuccesful, show error.
 	if (!al_init())
@@ -102,6 +105,10 @@ int main(int argc, char **argv)
 					myElevator.checkButtons();
 					InputManager::getInstance().clearInput();
 				}
+				else
+				{
+					//add floor button check here
+				}
 			}
 			myElevator.update();
 		}
@@ -135,6 +142,7 @@ int main(int argc, char **argv)
 			}
 			
 			myElevator.draw();
+			//elevatorPanel.draw();
 			// draw
 			al_flip_display();
 		}

@@ -1,14 +1,16 @@
 #ifndef ELEVATOR_H
 #define ELEVATOR_H
-#include "Panel.h"
 #include "InputManager.h"
 #include <iostream>
+#include "allegro5/allegro_primitives.h"
 //#include "ElevatorManager.h"
+#include "Panel.h"
+#include <vector>
 class Elevator
 {
 private:
 	int numFloors;
-	enum STATE{ MOVING_UP, MOVING_DOWN, STOPPED, WAITING };
+	enum ELEVATOR_STATES{ MOVING_UP, MOVING_DOWN, STOPPED, WAITING };
 	Panel *ElevatorPanel;
 
 	int pos_x = 420;
@@ -17,7 +19,12 @@ private:
 	int height = 50;
 	int speed = 5;
 	int direction = 1;
-	int elevatorState;
+	int currentState;
+	int nextState;
+	int currentFloor;
+
+	std::vector<int> upQueue;
+	std::vector<int> downQueue;
 
 public:
 	Elevator(int floors);
@@ -29,6 +36,9 @@ public:
 	void stop() { direction = 0; }
 	void draw();
 	void update();
+	int getState();
+	int getCurrentFloor();
+	void addDestination(int destFloor);
 	void checkButtons();
 };
 #endif ELEVATOR_H
