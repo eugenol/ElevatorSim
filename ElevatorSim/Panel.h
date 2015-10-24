@@ -5,7 +5,7 @@
 #include "allegro5/allegro_primitives.h"
 //#include "Elevator.h"
 
-class Elevator;
+class Elevator; //Forward declaration
 
 class Panel
 {

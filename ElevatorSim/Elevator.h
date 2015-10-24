@@ -11,20 +11,22 @@ class Elevator
 private:
 	int numFloors;
 	enum ELEVATOR_STATES{ MOVING_UP, MOVING_DOWN, STOPPED, WAITING };
+	enum DIRECTION{ UP = -1, DOWN = 1 };
 	Panel *ElevatorPanel;
 
 	int pos_x = 420;
-	int pos_y = 0;
+	int pos_y = 600;
 	int width = 50;
 	int height = 50;
-	int speed = 5;
-	int direction = 1;
-	int currentState;
-	int nextState;
-	int currentFloor;
+	int speed = 3;
+	int direction = UP;
+	int currentState = WAITING;
+	int nextState = WAITING;
+	int currentFloor =0;
 
 	std::vector<int> upQueue;
 	std::vector<int> downQueue;
+	int calcCurrentFloor();
 
 public:
 	Elevator(int floors);

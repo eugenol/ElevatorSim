@@ -23,19 +23,30 @@ void Elevator::draw()
 
 void Elevator::update()
 {
-	//if (InputManager::getInstance().isMouseButtonPressed(0) && (InputManager::getInstance().getMouseX()))
 	
 	ElevatorPanel->update();
+
+	//Find current floor
+	currentFloor = calcCurrentFloor();
 	
-	pos_y += speed*direction;
+	if (currentState == WAITING && !upQueue.empty())
+	{
+		nextState = MOVING_UP;
 
-	if (pos_y < 0)
-		direction = 1;
-	if (pos_y + height > 600)
-		direction = -1;
+	}
+	else if (currentState == MOVING_UP)
+	{
+		pos_y += speed*direction;
 
-	ElevatorPanel->
+		if (pos_y < 0)
+			direction = 1;
+		if (pos_y + height > 600)
+			direction = -1;
+	}
 
+
+	//ElevatorPanel->
+	currentState = nextState;
 }
 
 
@@ -43,8 +54,14 @@ void Elevator::addDestination(int destFloor)
 {
 	upQueue.push_back(destFloor);
 }
+
 void  Elevator::checkButtons()
 {
 	ElevatorPanel->checkPressed();
 	std::cout << "Checking Panel" << std::endl;
+}
+
+int  Elevator::calcCurrentFloor()
+{
+
 }
