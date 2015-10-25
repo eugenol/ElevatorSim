@@ -61,6 +61,32 @@ void Elevator::update()
 		}
 		else
 		{
+			int tempTarget;
+			// check if queue has been updated
+			// if there is a value greater than the current value, stop there.
+			for (std::vector<int>::iterator iter = liftQueue.begin(); iter != liftQueue.end(); iter++)
+			{
+				if (*iter >= currentFloor)
+				{
+					int tempTarget = targetFloor;
+					targetFloor = *iter;
+					if (tempTarget == targetFloor)
+					{
+						liftQueue.erase(iter);
+					}
+					else
+					{
+						liftQueue.erase(iter);
+						liftQueue.push_back(tempTarget);
+						std::sort(liftQueue.begin(), liftQueue.end());
+					}
+					direction = UP;
+					nextState = MOVING_TO_DESTINATION;
+					break;
+				}
+			}
+
+
 			if (currentFloor == targetFloor)
 			{
 				nextState = STOPPED_AT_DESTINATION;
