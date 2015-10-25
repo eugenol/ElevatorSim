@@ -1,7 +1,7 @@
 #include "FloorPanel.h"
 #include "Elevator.h"
 
-FloorPanel::FloorPanel(int floor_num, int max_floors, int y, int h, Elevator *lift)
+FloorPanel::FloorPanel(int floor_num, int max_floors, int y, int h, Elevator *_lift)
 {
 	numFloor = floor_num;
 	maxFloors = max_floors;
@@ -9,6 +9,7 @@ FloorPanel::FloorPanel(int floor_num, int max_floors, int y, int h, Elevator *li
 	height = h - 4;
 	pos_x = 600;
 	width = 200;
+	lift = _lift;
 
 	if ((numFloor == 0) || (numFloor == max_floors-1))
 	{
@@ -51,7 +52,6 @@ void FloorPanel::draw()
 
 void FloorPanel::checkPressed()
 {
-	al_draw_filled_rectangle(pos_x, pos_y, pos_x + width, pos_y - height, al_map_rgb(0, 255, 0));
 	for (std::vector<FloorButton*>::iterator iter = Buttons.begin(); iter != Buttons.end(); iter++)
 	{
 		if((*iter)->checkPressed())
@@ -60,5 +60,14 @@ void FloorPanel::checkPressed()
 			lift->addCall((*iter)->getFloorNum(), (*iter)->getDirection());
 		}
 		std::cout << "Checking Floor: " << numFloor << " Panel " << (*iter)->getDirection() << std::endl;
+	}
+}
+
+void FloorPanel::clearButton()
+{
+	for (std::vector<FloorButton*>::iterator iter = Buttons.begin(); iter != Buttons.end(); iter++)
+	{
+		(*iter)->setLight(0);
+
 	}
 }

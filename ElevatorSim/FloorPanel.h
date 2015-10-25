@@ -19,11 +19,12 @@ private:
 	int height;
 	Elevator *lift;
 public:
-	FloorPanel(int floor_num, int max_floors, int y, int h, Elevator *lift);
+	FloorPanel(int floor_num, int max_floors, int y, int h, Elevator *_lift);
 	~FloorPanel();
 	void update();
 	void draw();
 	void checkPressed();
+	void clearButton();
 };
 
 #endif /*FLOORPANEL_H*/

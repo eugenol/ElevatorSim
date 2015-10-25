@@ -35,3 +35,16 @@ void Floor::checkPressed()
 	}
 	
 }
+
+void Floor::clearButton()
+{
+	Panel.clearButton();
+}
+
+int Floor::onFloor(int y1, int y2)
+{
+	if (y1 < pos_y && y2 > (pos_y - height))
+		return floorNum;
+	else
+		return -1;
+}

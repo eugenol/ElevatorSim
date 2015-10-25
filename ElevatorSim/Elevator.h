@@ -18,19 +18,20 @@ private:
 	Panel *ElevatorPanel;
 
 	int pos_x = 420;
-	int pos_y = 600;
+	int pos_y = 598;
 	int width = 50;
 	int height = 50;
 	int speed = 3;
 	int direction = UP;
 	int currentState = WAITING;
 	int nextState = WAITING;
-	int currentFloor =0;
-	
+	int currentFloor = 0;
+	int targetFloor = 0;
 
-	std::vector<int> upQueue;
-	std::vector<int> downQueue;
-	int calcCurrentFloor();
+	std::vector<int> callQueue;
+	//std::vector<int> destQueue;
+	std::vector<int> liftQueue;
+
 	Building *buildingPtr;
 
 public:

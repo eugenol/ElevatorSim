@@ -61,5 +61,18 @@ void Building::checkPressed()
 
 void Building::clearFloorButton(int floor)
 {
+	Floors[floor]->clearButton();
+}
 
+int Building::findFloor(int y1, int y2)
+{
+	int validFloor = -1;
+
+	for (std::vector<Floor*>::iterator iter = Floors.begin(); iter != Floors.end(); iter++)
+	{
+		validFloor = (*iter)->onFloor(y1,y2);
+		if (validFloor != -1)
+			return validFloor;
+	}
+	return validFloor;
 }

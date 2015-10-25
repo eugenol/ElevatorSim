@@ -19,6 +19,7 @@ public:
 	void draw();
 	void checkPressed();
 	void clearFloorButton(int floor);
+	int findFloor(int x1, int x2);
 };
 
 #endif /*BUILDING_H*/

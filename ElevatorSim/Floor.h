@@ -20,6 +20,8 @@ public:
 	void update();
 	void draw();
 	void checkPressed();
+	void clearButton();
+	int onFloor(int y1, int y2);
 };
 
 #endif /*FLOOR_H*/

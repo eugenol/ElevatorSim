@@ -1,6 +1,6 @@
 #include "Elevator.h"
 #include "Building.h"
-
+#include <algorithm>
 
 Elevator::Elevator(int floors, Building *_buildingPtr)
 {
@@ -19,57 +19,104 @@ Elevator::~Elevator()
 void Elevator::draw()
 {
 	ElevatorPanel->draw();
-	al_draw_filled_rectangle(pos_x, pos_y, pos_x+width, pos_y+height, al_map_rgb(255, 0, 255));
+	al_draw_filled_rectangle(pos_x, pos_y, pos_x+width, pos_y-height, al_map_rgb(255, 0, 255));
 }
 
 void Elevator::update()
 {
-	
+	int nextStop = -1;
+
 	ElevatorPanel->update();
 
-	//Find current floor
-	currentFloor = calcCurrentFloor();
-	
-	if (currentState == WAITING && !upQueue.empty())
+	//currentState == nextState;
+	currentFloor = buildingPtr->findFloor(pos_y, pos_y - height);
+
+	//if (currentFloor != -1 && currentFloor!= )
+	//{
+	//	if
+	//}
+
+	if (currentState == WAITING)
 	{
-		nextState = MOVING_UP;
+		if (liftQueue.empty())
+			nextState = WAITING;
+		else
+			nextState = MOVING_UP;
+	}
+	else if (currentState == MOVING_UP || currentState == MOVING_DOWN)
+	{
+		if (currentFloor == -1)
+		{
+			pos_y += speed*direction;
+
+			nextState = MOVING_UP;
+
+			if (pos_y - height < 0)
+			{
+				direction = 0;
+				pos_y = 2 + height;
+				nextState = STOPPED;
+			}
+
+			if (pos_y > 600)
+			{
+				direction = 0;
+				pos_y = 598;
+				nextState = STOPPED;
+			}
+		}
+		else
+		{
+
+		}
+
+		
+	}
+	else if (currentState == STOPPED)
+	{
+		if (currentFloor == 0 && nextStop == -1)
+		{
+			nextState = MOVING_UP;
+			direction = UP;
+		}
+		else if (currentFloor == numFloors-1)
+		{
+			nextState = MOVING_DOWN;
+			direction = DOWN;
+		}
 
 	}
-	else if (currentState == MOVING_UP)
-	{
-		pos_y += speed*direction;
 
-		if (pos_y < 0)
-			direction = 1;
-		if (pos_y + height > 600)
-			direction = -1;
-	}
-
-
-	//ElevatorPanel->
 	currentState = nextState;
 }
 
 
 void Elevator::addDestination(int destFloor)
 {
-	upQueue.push_back(destFloor);
+	liftQueue.push_back(destFloor);
+	std::sort(liftQueue.begin(), liftQueue.end());
+
 }
 
 void Elevator::addCall(int destFloor, int dir)
 {
-	//upQueue.push_back(destFloor);
+	liftQueue.push_back(destFloor);
+	std::sort(liftQueue.begin(), liftQueue.end());
+	
+	//std::vector<int>::iterator last = std::unique(liftQueue.begin(), liftQueue.end());
+	//auto is quicker to type
+	auto last = std::unique(liftQueue.begin(), liftQueue.end()); // In case of duplicate
+	liftQueue.erase(last, liftQueue.end());						// In case of duplicate
+
+	for (const auto& i : liftQueue)
+		std::cout << i << " ";
+	std::cout << "\n";
 }
 
 void  Elevator::checkButtons()
 {
 	ElevatorPanel->checkPressed();
 	std::cout << "Checking Panel" << std::endl;
-}
-
-int  Elevator::calcCurrentFloor()
-{
-	return 0;
 }
 
 void Elevator::clearButtons(int floor)
