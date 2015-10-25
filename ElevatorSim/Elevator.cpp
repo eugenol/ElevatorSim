@@ -61,7 +61,6 @@ void Elevator::update()
 		}
 		else
 		{
-			int tempTarget;
 			// check if queue has been updated
 			// if there is a value greater than the current value, stop there.
 			for (std::vector<int>::iterator iter = liftQueue.begin(); iter != liftQueue.end(); iter++)
@@ -123,6 +122,14 @@ void Elevator::update()
 		ElevatorPanel->clearButton(currentFloor);
 		buildingPtr->clearFloorButton(currentFloor);
 
+		std::vector<int>::iterator iter = liftQueue.begin();
+		// remove current floor in case it was pressed again
+		while (iter != liftQueue.end() && *iter == currentFloor)
+		{
+			iter = liftQueue.erase(iter);
+			//iter--;
+		}
+
 		if (delayTime == 120) //if (delayTime == 600)
 		{
 			delayTime = 0;
@@ -157,6 +164,36 @@ void Elevator::update()
 						break;
 					}
 				}
+
+				//std::vector<int>::iterator iter = liftQueue.begin();
+				//while ( iter != liftQueue.end())
+				//{
+				//	// remove current floor in case it was pressed again
+				//	while (iter != liftQueue.end() && *iter == currentFloor)
+				//	{
+				//		iter = liftQueue.erase(iter);
+				//		//iter--;
+				//	}
+
+				//	if (iter != liftQueue.end() && *iter > currentFloor)
+				//	{
+				//		targetFloor = *iter;
+				//		direction = UP;
+				//		destFlag = true;
+				//		liftQueue.erase(iter);
+				//		nextState = MOVING_TO_DESTINATION;
+				//		break;
+				//	}
+				//	else
+				//	{
+				//		nextState = MOVING_TO_DESTINATION;
+				//		direction = DOWN;
+				//		targetFloor = 0;
+				//		destFlag = true;
+				//		break;
+				//	}
+				//	iter++;
+				//}
 
 				if (!destFlag)
 				{
