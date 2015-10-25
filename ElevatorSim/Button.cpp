@@ -42,8 +42,5 @@ bool Button::isPressed()
 
 void Button::setLight(int onOff)
 {
-	if (onOff)
-		lightOn = true;
-	else
-		lightOn = false;
+	lightOn = onOff ? true : false;
 }

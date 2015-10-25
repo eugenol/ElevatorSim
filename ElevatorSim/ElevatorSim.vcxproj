@@ -87,6 +87,8 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="FloorButton.cpp" />
+    <ClCompile Include="FloorPanel.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Panel.cpp" />
@@ -97,6 +99,8 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Elevator.h" />
     <ClInclude Include="Floor.h" />
+    <ClInclude Include="FloorButton.h" />
+    <ClInclude Include="FloorPanel.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Panel.h" />
   </ItemGroup>

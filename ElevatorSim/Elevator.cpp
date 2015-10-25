@@ -1,10 +1,11 @@
 #include "Elevator.h"
-//#include "Panel.h"
+#include "Building.h"
 
 
-Elevator::Elevator(int floors)
+Elevator::Elevator(int floors, Building *_buildingPtr)
 {
 	numFloors = floors;
+	buildingPtr = _buildingPtr;
 	ElevatorPanel = new Panel(this);
 }
 
@@ -55,6 +56,11 @@ void Elevator::addDestination(int destFloor)
 	upQueue.push_back(destFloor);
 }
 
+void Elevator::addCall(int destFloor, int dir)
+{
+	//upQueue.push_back(destFloor);
+}
+
 void  Elevator::checkButtons()
 {
 	ElevatorPanel->checkPressed();
@@ -63,5 +69,11 @@ void  Elevator::checkButtons()
 
 int  Elevator::calcCurrentFloor()
 {
+	return 0;
+}
 
+void Elevator::clearButtons(int floor)
+{
+	buildingPtr->clearFloorButton(floor);
+	ElevatorPanel->clearButton(floor);
 }

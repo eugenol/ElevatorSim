@@ -7,7 +7,8 @@
 //Own h files
 #include "InputManager.h"
 #include "Elevator.h"
-#include "Panel.h"
+//#include "Panel.h"
+#include "Building.h"
 
 
 int main(int argc, char **argv)
@@ -28,10 +29,8 @@ int main(int argc, char **argv)
 
 	//Elevator variables
 	int numFloors = 10;
-	Elevator myElevator(numFloors);
-	//Panel elevatorPanel(&myElevator);
-	//myElevator.addPanel(&elevatorPanel);
-
+	//Elevator myElevator(numFloors);
+	Building myBuilding(numFloors);
 	//Initialise allegro, if unsuccesful, show error.
 	if (!al_init())
 	{
@@ -100,17 +99,11 @@ int main(int argc, char **argv)
 			// update
 			if (InputManager::getInstance().isMouseButtonPressed(0))
 			{
-				if (InputManager::getInstance().getMouseX() < DISPLAY_WIDTH/2)
-				{
-					myElevator.checkButtons();
+					myBuilding.checkPressed();
 					InputManager::getInstance().clearInput();
-				}
-				else
-				{
-					//add floor button check here
-				}
 			}
-			myElevator.update();
+			//myElevator.update();
+			myBuilding.update();
 		}
 
 
@@ -136,13 +129,13 @@ int main(int argc, char **argv)
 			al_draw_line(490, 0,490, DISPLAY_HEIGHT, al_map_rgb(255, 0, 0), 10);
 
 			// Floor lines
-			for (int i = 0; i < DISPLAY_HEIGHT; i += 60)
-			{
-				al_draw_line(DISPLAY_WIDTH / 2, i, DISPLAY_WIDTH, i, al_map_rgb(255, 0, 0), 10);
-			}
+			//for (int i = 0; i < DISPLAY_HEIGHT; i += 60)
+			//{
+			//	al_draw_line(DISPLAY_WIDTH / 2, i, DISPLAY_WIDTH, i, al_map_rgb(255, 0, 0), 10);
+			//}
 			
-			myElevator.draw();
-			//elevatorPanel.draw();
+			//myElevator.draw();
+			myBuilding.draw();
 			// draw
 			al_flip_display();
 		}

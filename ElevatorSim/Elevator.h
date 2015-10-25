@@ -6,6 +6,9 @@
 //#include "ElevatorManager.h"
 #include "Panel.h"
 #include <vector>
+
+class Building;
+
 class Elevator
 {
 private:
@@ -23,13 +26,16 @@ private:
 	int currentState = WAITING;
 	int nextState = WAITING;
 	int currentFloor =0;
+	
 
 	std::vector<int> upQueue;
 	std::vector<int> downQueue;
 	int calcCurrentFloor();
+	Building *buildingPtr;
 
 public:
-	Elevator(int floors);
+	//Elevator(int floors);
+	Elevator(int floors, Building *_buildingPtr);
 	~Elevator();
 	int getFloors() { return numFloors; }
 	int getX() { return pos_x; }
@@ -41,7 +47,9 @@ public:
 	int getState();
 	int getCurrentFloor();
 	void addDestination(int destFloor);
+	void addCall(int destFloor, int dir);
 	void checkButtons();
+	void clearButtons(int floor);
 };
 #endif ELEVATOR_H
 
