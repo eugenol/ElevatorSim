@@ -4,6 +4,8 @@
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_font.h>
 //Own h files
 #include "InputManager.h"
 #include "Elevator.h"
@@ -27,11 +29,7 @@ int main(int argc, char **argv)
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;	//Pointer to event queue
 	ALLEGRO_TIMER *timer = NULL;				//Pointer to timers
 
-	//Elevator variables
-	int numFloors = 10;
-	//Elevator myElevator(numFloors);
-	Building myBuilding(numFloors);
-	//Initialise allegro, if unsuccesful, show error.
+
 	if (!al_init())
 	{
 		al_show_native_message_box(al_get_current_display(), "Error", "Error", "Could not initatialize allegro",
@@ -72,12 +70,20 @@ int main(int argc, char **argv)
 	al_install_mouse();			//Mouse
 	al_init_primitives_addon(); //Primitives (shapes)
 	al_init_image_addon();		//Images
+	al_init_font_addon();		//fonts (text font)
+	al_init_ttf_addon();		//true text format (text)
 
 	//Register Event Sources
 	al_register_event_source(event_queue, al_get_display_event_source(display)); //display events
 	al_register_event_source(event_queue, al_get_timer_event_source(timer)); // timer events
 	al_register_event_source(event_queue, al_get_keyboard_event_source()); // keyboard events
 	al_register_event_source(event_queue, al_get_mouse_event_source()); // mouse events
+
+	//Elevator variables
+	int numFloors = 10;
+	//Elevator myElevator(numFloors);
+	Building myBuilding(numFloors);
+	//Initialise allegro, if unsuccesful, show error.
 
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	al_flip_display();

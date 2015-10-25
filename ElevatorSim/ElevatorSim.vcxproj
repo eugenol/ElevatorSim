@@ -103,6 +103,12 @@
     <ClInclude Include="FloorPanel.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Panel.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Matchworks.ttf" />
+    <Font Include="pirulen.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
