@@ -31,9 +31,9 @@ void Elevator::update()
 	//currentState == nextState;
 	currentFloor = buildingPtr->findFloor(pos_y, pos_y - height);
 	
-	std::cout << "Current State: " << currentState << std::endl;
-	std::cout << "Current Floor: " << currentFloor << std::endl;
-	std::cout << "Target Floor: " << targetFloor << std::endl;
+	//std::cout << "Current State: " << currentState << std::endl;
+	//std::cout << "Current Floor: " << currentFloor << std::endl;
+	//std::cout << "Target Floor: " << targetFloor << std::endl;
 
 	if (currentState == MOVING_TO_DESTINATION)
 	{
