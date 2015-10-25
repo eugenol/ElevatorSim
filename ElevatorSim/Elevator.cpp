@@ -2,6 +2,9 @@
 #include "Building.h"
 #include <algorithm>
 
+#ifndef NotAFloor
+#define NotAFloor -1
+#endif
 Elevator::Elevator(int floors, Building *_buildingPtr)
 {
 	numFloors = floors;
@@ -24,7 +27,7 @@ void Elevator::draw()
 
 void Elevator::update()
 {
-	int nextStop = -1;
+	int nextStop = NotAFloor;
 
 	ElevatorPanel->update();
 
@@ -37,22 +40,22 @@ void Elevator::update()
 
 	if (currentState == MOVING_TO_DESTINATION)
 	{
-		if (currentFloor == -1)
+		if (currentFloor == NotAFloor)					//if we are between floors then:
 		{
-			pos_y += speed*direction;
+			pos_y += speed*direction;					//keep moving in the current direction
 
-			nextState = MOVING_TO_DESTINATION;
+			nextState = MOVING_TO_DESTINATION;			//and say that we are in a moving state
 
-			if (pos_y - height < 0)
-			{
+			if (pos_y - height < 0)						//if elevator is at the roof of building
+			{											//start moving down
 				direction = DOWN;
 				pos_y = 2 + height;
 				nextState = MOVING_TO_DESTINATION;
 				targetFloor = numFloors - 1;
 			}
 
-			if (pos_y > 600)
-			{
+			if (pos_y > 600)							//if elevator is at the floor of building
+			{											//start moving up
 				direction = UP;
 				pos_y = 598;
 				nextState = MOVING_TO_DESTINATION;
@@ -61,12 +64,11 @@ void Elevator::update()
 		}
 		else
 		{
-			int tempTarget;
 			// check if queue has been updated
 			// if there is a value greater than the current value, stop there.
 			for (std::vector<int>::iterator iter = liftQueue.begin(); iter != liftQueue.end(); iter++)
 			{
-				if (*iter >= currentFloor)
+				if (*iter >= currentFloor)								//if above the current floor do:
 				{
 					int tempTarget = targetFloor;
 					targetFloor = *iter;

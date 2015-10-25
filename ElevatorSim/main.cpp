@@ -4,6 +4,8 @@
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_font.h>
 //Own h files
 #include "InputManager.h"
 #include "Elevator.h"
@@ -72,6 +74,8 @@ int main(int argc, char **argv)
 	al_install_mouse();			//Mouse
 	al_init_primitives_addon(); //Primitives (shapes)
 	al_init_image_addon();		//Images
+	al_init_font_addon();		//fonts (text font)
+	al_init_ttf_addon();		//true text format (text)
 
 	//Register Event Sources
 	al_register_event_source(event_queue, al_get_display_event_source(display)); //display events

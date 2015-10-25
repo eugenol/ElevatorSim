@@ -3,12 +3,15 @@
 #include "allegro5/allegro_primitives.h"
 #include "InputManager.h"
 #include <iostream>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 //#include "Elevator.h"
 
 
 class Button
 {
 private:
+	ALLEGRO_FONT *font;
 	int floorNumber;
 	int pos_x;
 	int pos_y;
