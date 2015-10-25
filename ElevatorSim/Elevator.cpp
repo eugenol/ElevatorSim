@@ -24,7 +24,7 @@ void Elevator::draw()
 
 void Elevator::update()
 {
-	int nextStop = -1;
+	//int nextStop = -1;
 
 	ElevatorPanel->update();
 
@@ -35,19 +35,19 @@ void Elevator::update()
 	//std::cout << "Current Floor: " << currentFloor << std::endl;
 	//std::cout << "Target Floor: " << targetFloor << std::endl;
 
-	if (currentState == MOVING_TO_DESTINATION)
+	if (currentState == MOVING_UP || currentState == MOVING_DOWN)
 	{
 		if (currentFloor == -1)
 		{
 			pos_y += speed*direction;
 
-			nextState = MOVING_TO_DESTINATION;
+			nextState = currentState;
 
 			if (pos_y - height < 0)
 			{
 				direction = DOWN;
 				pos_y = 2 + height;
-				nextState = MOVING_TO_DESTINATION;
+				nextState = MOVING_DOWN;
 				targetFloor = numFloors - 1;
 			}
 
@@ -55,33 +55,93 @@ void Elevator::update()
 			{
 				direction = UP;
 				pos_y = 598;
-				nextState = MOVING_TO_DESTINATION;
-				targetFloor =0;
+				nextState = MOVING_UP;
+				targetFloor = 0;
 			}
 		}
 		else
 		{
-			// check if queue has been updated
-			// if there is a value greater than the current value, stop there.
+			//Divide liftQueue Between upQueue & downQueue
 			for (std::vector<int>::iterator iter = liftQueue.begin(); iter != liftQueue.end(); iter++)
 			{
-				if (*iter >= currentFloor)
+				if (*iter > currentFloor)
 				{
-					int tempTarget = targetFloor;
+					upQueue.push_back(*iter);
+				}
+				else if (*iter < currentFloor)
+				{
+					downQueue.push_back(*iter);
+				}
+				std::sort(upQueue.begin(), upQueue.end());		// ascending
+				std::sort(downQueue.rbegin(), downQueue.rend()); // reverse sort ... descending
+
+			}
+
+
+			// check if queue has been updated
+			// if there is a value greater than the current value, stop there.
+
+			if (currentState == MOVING_UP)
+			{
+				if (!upQueue.empty()) //up list not empty, keep moving up
+				{
+					std::list <int>::iterator iter = upQueue.begin();
 					targetFloor = *iter;
-					if (tempTarget == targetFloor)
+					upQueue.pop_front();
+					direction = UP;
+					nextState = currentState;
+				}
+				else
+				{
+					if (!downQueue.empty()) //up list not empty, keep moving up
 					{
-						liftQueue.erase(iter);
+						std::list <int>::iterator iter = downQueue.begin();
+						targetFloor = *iter;
+						downQueue.pop_front();
+						direction = DOWN;
+						nextState = MOVING_DOWN;
 					}
 					else
 					{
-						liftQueue.erase(iter);
-						liftQueue.push_back(tempTarget);
-						std::sort(liftQueue.begin(), liftQueue.end());
+						//both Queues empty
+						//go to ground floor
+						targetFloor = 0;
+						direction = DOWN;
+						nextState = MOVING_DOWN;
 					}
-					direction = UP;
-					nextState = MOVING_TO_DESTINATION;
-					break;
+				}
+
+			}
+			else if (currentState == MOVING_DOWN)
+			{
+				// if moving down && nothing below, move up
+				// if moving down && something below, move down
+				if (!downQueue.empty()) //down list not empty, keep moving down
+				{
+					std::list <int>::iterator iter = downQueue.begin();
+					targetFloor = *iter;
+					downQueue.pop_front();
+					direction = DOWN;
+					nextState = currentState;
+				}
+				else
+				{
+					if (!upQueue.empty()) //up list not empty, keep moving up
+					{
+						std::list <int>::iterator iter = upQueue.begin();
+						targetFloor = *iter;
+						upQueue.pop_front();
+						direction = DOWN;
+						nextState = MOVING_DOWN;
+					}
+					else
+					{
+						//both Queues empty
+						//go to ground floor
+						targetFloor = 0;
+						direction = DOWN;
+						nextState = MOVING_DOWN;
+					}
 				}
 			}
 
@@ -95,13 +155,13 @@ void Elevator::update()
 			{
 				pos_y += speed*direction;
 
-				nextState = MOVING_TO_DESTINATION;
+				nextState = currentState;
 
 				if (pos_y - height < 0)
 				{
 					direction = DOWN;
 					pos_y = 2 + height;
-					nextState = MOVING_TO_DESTINATION;
+					nextState = MOVING_DOWN;
 					targetFloor = numFloors - 1;
 				}
 
@@ -109,7 +169,7 @@ void Elevator::update()
 				{
 					direction = UP;
 					pos_y = 598;
-					nextState = MOVING_TO_DESTINATION;
+					nextState = MOVING_UP;
 					targetFloor = 0;
 				}
 			}
@@ -118,21 +178,26 @@ void Elevator::update()
 	}
 	else if (currentState == STOPPED_AT_DESTINATION)
 	{
+		if (delayTime == 0)
+			tempState = prevState;
+
 		delayTime++;
 		ElevatorPanel->clearButton(currentFloor);
 		buildingPtr->clearFloorButton(currentFloor);
 
 		std::vector<int>::iterator iter = liftQueue.begin();
 		// remove current floor in case it was pressed again
-		while (iter != liftQueue.end() && *iter == currentFloor)
-		{
-			iter = liftQueue.erase(iter);
-			//iter--;
-		}
+		//while (iter != liftQueue.end() && *iter == currentFloor)
+		//{
+		//	iter = liftQueue.erase(iter);
+		//	//iter--;
+		//}
 
 		if (delayTime == 120) //if (delayTime == 600)
 		{
 			delayTime = 0;
+
+			prevState = tempState;
 
 			if (currentFloor == 0)
 			{
@@ -140,9 +205,9 @@ void Elevator::update()
 				targetFloor = 0;
 			}
 			//find new target
-			else if (liftQueue.empty())
+			else if (upQueue.empty() && downQueue.empty())
 			{
-				nextState = MOVING_TO_DESTINATION;
+				nextState = MOVING_DOWN;
 				direction = DOWN;
 				targetFloor = 0;
 			}
@@ -150,21 +215,68 @@ void Elevator::update()
 			{
 				//find place in queue, check if there are higher floors, if so go there,
 				// if not go lower
-				bool destFlag = false;
 
-				for (std::vector<int>::iterator iter = liftQueue.begin(); iter != liftQueue.end(); iter++)
+				if (prevState == MOVING_UP)
 				{
-					if (*iter > currentFloor)
+					if (!upQueue.empty()) //up list not empty, keep moving up
 					{
+						std::list <int>::iterator iter = upQueue.begin();
 						targetFloor = *iter;
+						upQueue.pop_front();
 						direction = UP;
-						destFlag = true;
-						liftQueue.erase(iter);
-						nextState = MOVING_TO_DESTINATION;
-						break;
+						nextState = currentState;
+					}
+					else
+					{
+						if (!downQueue.empty()) //up list not empty, keep moving up
+						{
+							std::list <int>::iterator iter = downQueue.begin();
+							targetFloor = *iter;
+							downQueue.pop_front();
+							direction = DOWN;
+							nextState = MOVING_DOWN;
+						}
+						else
+						{
+							//both Queues empty
+							//go to ground floor
+							targetFloor = 0;
+							direction = DOWN;
+							nextState = MOVING_DOWN;
+						}
 					}
 				}
+				else if (prevState == MOVING_DOWN)
+				{
+					if (!downQueue.empty()) //down list not empty, keep moving down
+					{
+						std::list <int>::iterator iter = downQueue.begin();
+						targetFloor = *iter;
+						downQueue.pop_front();
+						direction = DOWN;
+						nextState = currentState;
+					}
+					else
+					{
+						if (!upQueue.empty()) //up list not empty, keep moving up
+						{
+							std::list <int>::iterator iter = upQueue.begin();
+							targetFloor = *iter;
+							upQueue.pop_front();
+							direction = DOWN;
+							nextState = MOVING_DOWN;
+						}
+						else
+						{
+							//both Queues empty
+							//go to ground floor
+							targetFloor = 0;
+							direction = DOWN;
+							nextState = MOVING_DOWN;
+						}
+					}
 
+				}
 				//std::vector<int>::iterator iter = liftQueue.begin();
 				//while ( iter != liftQueue.end())
 				//{
@@ -195,14 +307,6 @@ void Elevator::update()
 				//	iter++;
 				//}
 
-				if (!destFlag)
-				{
-					std::vector<int>::iterator iter = liftQueue.end() - 1;
-					targetFloor = *iter;
-					liftQueue.erase(iter);
-					direction = DOWN;
-					nextState = MOVING_TO_DESTINATION;
-				}
 			}
 		}
 		else
@@ -212,20 +316,21 @@ void Elevator::update()
 	}
 	else if (currentState == WAITING_AT_GROUND)
 	{
-		if (liftQueue.empty())
+		if (upQueue.empty())
 		{
 			nextState = WAITING_AT_GROUND;
 		}
 		else
 		{
-			std::vector<int>::iterator iter = liftQueue.begin();
+			std::list<int>::iterator iter = upQueue.begin();
 			targetFloor = *iter;
-			liftQueue.erase(iter);
+			upQueue.pop_front();
 			direction = UP;
-			nextState = MOVING_TO_DESTINATION;
+			nextState = MOVING_UP;
 		}
 	}
 
+	prevState = currentState;
 	currentState = nextState;
 }
 

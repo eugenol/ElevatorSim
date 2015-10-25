@@ -6,6 +6,7 @@
 //#include "ElevatorManager.h"
 #include "Panel.h"
 #include <vector>
+#include <list>
 
 class Building;
 
@@ -13,7 +14,8 @@ class Elevator
 {
 private:
 	int numFloors;
-	enum ELEVATOR_STATES{ MOVING_TO_DESTINATION, STOPPED_AT_DESTINATION, WAITING_AT_GROUND };
+	//enum ELEVATOR_STATES{ MOVING_TO_DESTINATION, STOPPED_AT_DESTINATION, WAITING_AT_GROUND };
+	enum ELEVATOR_STATES{ MOVING_UP, MOVING_DOWN, STOPPED_AT_DESTINATION, WAITING_AT_GROUND };
 	enum DIRECTION{ UP = -1, DOWN = 1 };
 	Panel *ElevatorPanel;
 
@@ -25,12 +27,14 @@ private:
 	int direction = UP;
 	int currentState = WAITING_AT_GROUND;
 	int nextState = WAITING_AT_GROUND;
+	int prevState = WAITING_AT_GROUND;
+	int tempState;
 	int currentFloor = 0;
 	int targetFloor = 0;
 	int delayTime = 0;
 
-	std::vector<int> callQueue;
-	//std::vector<int> destQueue;
+	std::list<int> upQueue;
+	std::list<int> downQueue;
 	std::vector<int> liftQueue;
 
 	Building *buildingPtr;
