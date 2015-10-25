@@ -72,8 +72,8 @@ void Elevator::update()
 				{
 					downQueue.push_back(*iter);
 				}
-				std::sort(upQueue.begin(), upQueue.end());		// ascending
-				std::sort(downQueue.rbegin(), downQueue.rend()); // reverse sort ... descending
+				//std::sort(upQueue.begin(), upQueue.end());		// ascending
+				//std::sort(downQueue.rbegin(), downQueue.rend()); // reverse sort ... descending
 
 			}
 
