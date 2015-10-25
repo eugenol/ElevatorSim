@@ -58,6 +58,7 @@ void FloorPanel::checkPressed()
 		{
 			(*iter)->setLight(1);
 			lift->addCall((*iter)->getFloorNum(), (*iter)->getDirection());
+			break;
 		}
 		std::cout << "Checking Floor: " << numFloor << " Panel " << (*iter)->getDirection() << std::endl;
 	}

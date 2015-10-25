@@ -30,61 +30,137 @@ void Elevator::update()
 
 	//currentState == nextState;
 	currentFloor = buildingPtr->findFloor(pos_y, pos_y - height);
+	
+	std::cout << "Current State: " << currentState << std::endl;
+	std::cout << "Current Floor: " << currentFloor << std::endl;
+	std::cout << "Target Floor: " << targetFloor << std::endl;
 
-	//if (currentFloor != -1 && currentFloor!= )
-	//{
-	//	if
-	//}
-
-	if (currentState == WAITING)
-	{
-		if (liftQueue.empty())
-			nextState = WAITING;
-		else
-			nextState = MOVING_UP;
-	}
-	else if (currentState == MOVING_UP || currentState == MOVING_DOWN)
+	if (currentState == MOVING_TO_DESTINATION)
 	{
 		if (currentFloor == -1)
 		{
 			pos_y += speed*direction;
 
-			nextState = MOVING_UP;
+			nextState = MOVING_TO_DESTINATION;
 
 			if (pos_y - height < 0)
 			{
-				direction = 0;
+				direction = DOWN;
 				pos_y = 2 + height;
-				nextState = STOPPED;
+				nextState = MOVING_TO_DESTINATION;
+				targetFloor = numFloors - 1;
 			}
 
 			if (pos_y > 600)
 			{
-				direction = 0;
+				direction = UP;
 				pos_y = 598;
-				nextState = STOPPED;
+				nextState = MOVING_TO_DESTINATION;
+				targetFloor =0;
 			}
 		}
 		else
 		{
+			if (currentFloor == targetFloor)
+			{
+				nextState = STOPPED_AT_DESTINATION;
+				direction = 0;
+			}
+			else
+			{
+				pos_y += speed*direction;
 
+				nextState = MOVING_TO_DESTINATION;
+
+				if (pos_y - height < 0)
+				{
+					direction = DOWN;
+					pos_y = 2 + height;
+					nextState = MOVING_TO_DESTINATION;
+					targetFloor = numFloors - 1;
+				}
+
+				if (pos_y > 600)
+				{
+					direction = UP;
+					pos_y = 598;
+					nextState = MOVING_TO_DESTINATION;
+					targetFloor = 0;
+				}
+			}
 		}
 
-		
 	}
-	else if (currentState == STOPPED)
+	else if (currentState == STOPPED_AT_DESTINATION)
 	{
-		if (currentFloor == 0 && nextStop == -1)
-		{
-			nextState = MOVING_UP;
-			direction = UP;
-		}
-		else if (currentFloor == numFloors-1)
-		{
-			nextState = MOVING_DOWN;
-			direction = DOWN;
-		}
+		delayTime++;
+		ElevatorPanel->clearButton(currentFloor);
+		buildingPtr->clearFloorButton(currentFloor);
 
+		if (delayTime == 120) //if (delayTime == 600)
+		{
+			delayTime = 0;
+
+			if (currentFloor == 0)
+			{
+				nextState = WAITING_AT_GROUND;
+				targetFloor = 0;
+			}
+			//find new target
+			else if (liftQueue.empty())
+			{
+				nextState = MOVING_TO_DESTINATION;
+				direction = DOWN;
+				targetFloor = 0;
+			}
+			else
+			{
+				//find place in queue, check if there are higher floors, if so go there,
+				// if not go lower
+				bool destFlag = false;
+
+				for (std::vector<int>::iterator iter = liftQueue.begin(); iter != liftQueue.end(); iter++)
+				{
+					if (*iter > currentFloor)
+					{
+						targetFloor = *iter;
+						direction = UP;
+						destFlag = true;
+						liftQueue.erase(iter);
+						nextState = MOVING_TO_DESTINATION;
+						break;
+					}
+				}
+
+				if (!destFlag)
+				{
+					std::vector<int>::iterator iter = liftQueue.end() - 1;
+					targetFloor = *iter;
+					liftQueue.erase(iter);
+					direction = DOWN;
+					nextState = MOVING_TO_DESTINATION;
+				}
+			}
+		}
+		else
+		{
+			nextState = STOPPED_AT_DESTINATION;
+		}
+	}
+	else if (currentState == WAITING_AT_GROUND)
+	{
+		if (liftQueue.empty())
+		{
+			nextState = WAITING_AT_GROUND;
+		}
+		else
+		{
+			std::vector<int>::iterator iter = liftQueue.begin();
+			targetFloor = *iter;
+			liftQueue.erase(iter);
+			direction = UP;
+			nextState = MOVING_TO_DESTINATION;
+		}
 	}
 
 	currentState = nextState;
@@ -108,9 +184,9 @@ void Elevator::addCall(int destFloor, int dir)
 	auto last = std::unique(liftQueue.begin(), liftQueue.end()); // In case of duplicate
 	liftQueue.erase(last, liftQueue.end());						// In case of duplicate
 
-	for (const auto& i : liftQueue)
-		std::cout << i << " ";
-	std::cout << "\n";
+	//for (const auto& i : liftQueue)
+	//	std::cout << i << " ";
+	//std::cout << "\n";
 }
 
 void  Elevator::checkButtons()
