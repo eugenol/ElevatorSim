@@ -46,7 +46,7 @@ bool FloorButton::checkPressed()
 		InputManager::getInstance().getMouseY() < pos_y &&
 		InputManager::getInstance().getMouseY() > pos_y - height)
 	{
-		std::cout << "Floor " << floorNumber << " pressed "<< direction << std::endl;
+		//std::cout << "Floor " << floorNumber << " pressed "<< direction << std::endl;
 		return !lightOn;
 	}
 	return false;

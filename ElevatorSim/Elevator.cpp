@@ -234,6 +234,7 @@ void Elevator::update()
 			{
 				nextState = WAITING_AT_GROUND;
 				targetFloor = 0;
+				//if (prevState ==)
 			}
 			//find new target
 			else if (upQueue.empty() && downQueue.empty())

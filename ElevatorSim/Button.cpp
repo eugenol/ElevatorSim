@@ -39,7 +39,7 @@ bool Button::isPressed()
 		InputManager::getInstance().getMouseY() > pos_y &&
 		InputManager::getInstance().getMouseY() < pos_y + width)
 	{
-		std::cout << "Floor " << floorNumber << " pressed" << std::endl;
+		//std::cout << "Floor " << floorNumber << " pressed" << std::endl;
 		return !lightOn;
 	}
 	return false;
