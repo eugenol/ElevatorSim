@@ -19,7 +19,14 @@ Elevator::~Elevator()
 void Elevator::draw()
 {
 	ElevatorPanel->draw();
-	al_draw_filled_rectangle(pos_x, pos_y, pos_x+width, pos_y-height, al_map_rgb(255, 0, 255));
+	if (doorsOpen)
+	{
+		al_draw_filled_rectangle(pos_x, pos_y, pos_x + width, pos_y - height, al_map_rgb(255, 255, 255));
+		al_draw_filled_rectangle(pos_x-15, pos_y, pos_x-15 + width/2, pos_y - height, al_map_rgb(255, 0, 255));
+		al_draw_filled_rectangle(pos_x + 15 + width / 2, pos_y, pos_x + 15 + width , pos_y - height, al_map_rgb(255, 0, 255));
+	}
+	else
+		al_draw_filled_rectangle(pos_x, pos_y, pos_x + width, pos_y - height, al_map_rgb(255, 0, 255));
 }
 
 void Elevator::update()
@@ -182,7 +189,10 @@ void Elevator::update()
 	else if (currentState == STOPPED_AT_DESTINATION)
 	{
 		if (delayTime == 0)
+		{
 			tempState = prevState;
+			doorsOpen = true;
+		}
 
 		delayTime++;
 		ElevatorPanel->clearButton(currentFloor);
@@ -217,7 +227,7 @@ void Elevator::update()
 		if (delayTime == 120) //if (delayTime == 600)
 		{
 			delayTime = 0;
-
+			doorsOpen = false;
 			prevState = tempState;
 
 			if (currentFloor == 0)

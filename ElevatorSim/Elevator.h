@@ -32,6 +32,7 @@ private:
 	int currentFloor = 0;
 	int targetFloor = 0;
 	int delayTime = 0;
+	bool doorsOpen = false;
 
 	std::list<int> upQueue;
 	std::list<int> downQueue;
