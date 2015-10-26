@@ -5,7 +5,7 @@ Button::Button(int floor_number)
 	floorNumber = floor_number;
 	pos_x = 110 + (floorNumber % 3)*50;
 	pos_y = 160 + (floorNumber / 3)*50;
-	font = al_load_ttf_font("Matchworks.ttf", 14, 0);
+	font = al_load_ttf_font("Matchworks.ttf", 18, 0);
 
 }
 

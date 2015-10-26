@@ -19,7 +19,12 @@ Building::Building(int num_floors)
 
 Building::~Building()
 {
-
+	for (std::vector<Floor*>::iterator iter = Floors.begin(); iter != Floors.end(); iter++)
+	{
+		Floor *tempPtr = *iter;
+		delete tempPtr;
+	}
+	Floors.clear();
 }
 
 

@@ -17,7 +17,9 @@ private:
 	int pos_x;
 	int width;
 	int height;
+	int liftDirection = 0;
 	Elevator *lift;
+	ALLEGRO_FONT *font;
 public:
 	FloorPanel(int floor_num, int max_floors, int y, int h, Elevator *_lift);
 	~FloorPanel();

@@ -24,7 +24,7 @@ private:
 	int width = 50;
 	int height = 50;
 	int speed = 1;
-	int direction = UP;
+	int direction = 0;
 	int currentState = WAITING_AT_GROUND;
 	int nextState = WAITING_AT_GROUND;
 	int prevState = WAITING_AT_GROUND;
@@ -52,6 +52,7 @@ public:
 	void update();
 	int getState();
 	int getCurrentFloor();
+	int getDirection() { return direction; }
 	void addDestination(int destFloor);
 	void addCall(int destFloor, int dir);
 	void checkButtons();

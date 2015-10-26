@@ -1,4 +1,4 @@
-#include "FloorButton.h"
+﻿#include "FloorButton.h"
 
 FloorButton::FloorButton(int floor_num, int dir, int y, int h)
 {
@@ -7,7 +7,7 @@ FloorButton::FloorButton(int floor_num, int dir, int y, int h)
 	pos_y = y - 2;
 	height = h - 4;
 	width = 50;
-	pos_x = 620 + dir * 70;
+	pos_x = 640 + dir * 70;
 	font = al_load_ttf_font("Matchworks.ttf", 18, 0);
 }
 
@@ -32,9 +32,9 @@ void FloorButton::draw()
 		al_draw_filled_rectangle(pos_x, pos_y, pos_x + width, pos_y - height, al_map_rgb(0, 0, 255));
 
 	if (direction == 0)
-		al_draw_text(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y + height / 2, 0, "G");
+		al_draw_text(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y - height / 2, 0, "U");
 	else
-		al_draw_text(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y + height / 2, 0, "G");
+		al_draw_text(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y - height / 2, 0, "D");
 
 
 }
