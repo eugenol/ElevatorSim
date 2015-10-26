@@ -82,7 +82,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Elevator.cpp" />
@@ -94,7 +93,6 @@
     <ClCompile Include="Panel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Elevator.h" />
