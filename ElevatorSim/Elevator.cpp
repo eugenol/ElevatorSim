@@ -234,7 +234,21 @@ void Elevator::update()
 			{
 				nextState = WAITING_AT_GROUND;
 				targetFloor = 0;
-				//if (prevState ==)
+				if (prevState == MOVING_UP)
+				{
+					if(!upQueue.empty()) //up list not empty, keep moving up
+					{
+						upQueue.pop_front();
+					}
+				}
+				else if (prevState == MOVING_DOWN)
+				{
+					if (!downQueue.empty()) //up list not empty, keep moving up
+					{
+						downQueue.pop_front();
+					}
+				}
+
 			}
 			//find new target
 			else if (upQueue.empty() && downQueue.empty())
