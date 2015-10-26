@@ -196,6 +196,24 @@ void Elevator::update()
 		//	//iter--;
 		//}
 
+		for (std::vector<int>::iterator iter = liftQueue.begin(); iter != liftQueue.end(); iter++)
+		{
+			if (*iter > currentFloor)
+			{
+				upQueue.push_back(*iter);
+			}
+			else if (*iter < currentFloor)
+			{
+				downQueue.push_back(*iter);
+			}
+			//std::sort(upQueue.begin(), upQueue.end());		// ascending
+			//std::sort(downQueue.rbegin(), downQueue.rend()); // reverse sort ... descending
+			upQueue.sort();
+			downQueue.sort();
+			downQueue.reverse();
+		}
+		liftQueue.clear();
+
 		if (delayTime == 120) //if (delayTime == 600)
 		{
 			delayTime = 0;
