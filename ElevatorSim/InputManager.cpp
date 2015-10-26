@@ -121,6 +121,6 @@ void InputManager::clearInput()
 {
 	for (int i = 0; i < 3; i++)
 		mouseButton[i] = false;
-	for (int i = 0; i < keys.size(); i++)
+	for (unsigned int i = 0; i < keys.size(); i++)
 		keys[i] = false;
 }

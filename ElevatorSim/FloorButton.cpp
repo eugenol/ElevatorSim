@@ -8,11 +8,13 @@ FloorButton::FloorButton(int floor_num, int dir, int y, int h)
 	height = h - 4;
 	width = 50;
 	pos_x = 620 + dir * 70;
+	font = al_load_ttf_font("Matchworks.ttf", 18, 0);
 }
 
 
 FloorButton::~FloorButton()
 {
+	al_destroy_font(font);
 }
 
 
@@ -28,6 +30,11 @@ void FloorButton::draw()
 		al_draw_filled_rectangle(pos_x, pos_y, pos_x + width, pos_y - height, al_map_rgb(255, 255, 255));
 	else
 		al_draw_filled_rectangle(pos_x, pos_y, pos_x + width, pos_y - height, al_map_rgb(0, 0, 255));
+
+	if (direction == 0)
+		al_draw_text(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y + height / 2, 0, "G");
+	else
+		al_draw_text(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y + height / 2, 0, "G");
 
 
 }

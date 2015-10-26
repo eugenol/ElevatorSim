@@ -5,12 +5,13 @@ Button::Button(int floor_number)
 	floorNumber = floor_number;
 	pos_x = 110 + (floorNumber % 3)*50;
 	pos_y = 160 + (floorNumber / 3)*50;
-	font = al_load_ttf_font("Matchworks.ttf", 12, 0);
+	font = al_load_ttf_font("Matchworks.ttf", 14, 0);
 
 }
 
 Button::~Button()
 {
+	al_destroy_font(font);
 }
 
 void Button::update()
@@ -24,7 +25,11 @@ void Button::draw()
 		al_draw_filled_rectangle(pos_x, pos_y, pos_x+width, pos_y+height, al_map_rgb(255, 255, 255));
 	else
 		al_draw_filled_rectangle(pos_x, pos_y, pos_x + width, pos_y + height, al_map_rgb(255, 0, 255));
-	al_draw_textf(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y + height / 2, 0, "sigh");
+	
+	if (floorNumber==0)
+		al_draw_text(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y + height / 2, 0, "G");
+	else
+		al_draw_textf(font, al_map_rgb(0, 0, 0), pos_x + width / 2, pos_y + height / 2, 0, "%d", floorNumber);
 }
 
 bool Button::isPressed()

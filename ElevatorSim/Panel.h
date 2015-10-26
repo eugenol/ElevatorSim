@@ -17,6 +17,8 @@ private:
 	int panel_width = 300;
 	int	panel_height = 400;
 	Elevator *owner;
+	ALLEGRO_FONT *font;
+	int currentFloor = 0;
 public:
 	Panel(int floors);
 	Panel(Elevator *elevator);

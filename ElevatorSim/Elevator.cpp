@@ -431,3 +431,8 @@ void Elevator::clearButtons(int floor)
 	buildingPtr->clearFloorButton(floor);
 	ElevatorPanel->clearButton(floor);
 }
+
+int Elevator::getCurrentFloor( )
+{
+	return currentFloor;
+}

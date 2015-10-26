@@ -4,6 +4,8 @@
 #include <allegro5/allegro_primitives.h>
 #include "InputManager.h"
 #include <iostream>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 class FloorButton
 {
@@ -15,6 +17,8 @@ private:
 	int height;
 	int width;
 	bool lightOn = false;
+	ALLEGRO_FONT *font;
+
 
 public:
 	FloorButton(int floor_num, int dir, int y, int h);
